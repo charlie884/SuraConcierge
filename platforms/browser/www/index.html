@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SURA Concierge</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width">
+    <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet">
+
+    <!-- PLUGINS -->
+    
+    <!-- CUSTOM CSS  -->
+    <link href="styles/main.css" rel="stylesheet">
+    <link href="styles/plugins/noty.css" rel="stylesheet">
+    
+    <!-- BASE JS -->
+    <script src="cordova.js"></script>
+    <script src="kendo/js/jquery.min.js"></script>
+    <script src="kendo/js/kendo.mobile.min.js"></script>
+    <script src="app.js"></script>
+    
+    <!-- CUSTOM JS -->
+    <script src="js/plugins/sequence.js"></script>
+    
+    <!-- MODELOS -->
+    <script src="js/splash.js"></script>
+    <script src="js/inicio.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/meteorologia.js"></script>
+    <script src="js/wifi.js"></script>
+    <script src="js/transporte.js"></script>
+    <script src="js/moneda.js"></script>
+    <script src="js/conecciones.js"></script>
+    <script src="js/emergencia.js"></script>
+    <script src="js/emergenciaMedica.js"></script>
+    <script src="js/emergenciaOdontologica.js"></script>
+    <script src="js/asistenciaLegal.js"></script>
+    <script src="js/formLegal.js"></script>
+    <script src="js/consul.js"></script>
+    <script src="js/poliza.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/viajes.js"></script>
+    <script src="js/internaViajes.js"></script>
+    <script src="js/concierge.js"></script>
+    <script src="js/id.js"></script>
+    <script src="js/plugins/noty.js"></script>
+    
+</head>
+
+<body id="kendoUiMobileApp">
+    <!-- View splash -->
+    <div data-role="view" id="view-splash" data-init="app.splashService.viewModel.iniciar" 
+        data-use-native-scrolling="false">
+        <div id="splash"> 
+            <img src="images/gif_splash.gif">
+        </div>
+    </div>
+    
+    <!-- Layouts -->
+    <div data-role="layout" data-id="main">
+        <header data-role="header">
+            <div data-role="navbar">
+                <span data-role="view-title"></span>
+            </div>
+        </header>
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a href="components/homeView/view.html" data-icon="home"><span class="navigation-link-text" data-bind="text: strings.homeView.title"></span></a>
+                <a href="components/settingsView/view.html" data-icon="settings"><span class="navigation-link-text" data-bind="text: strings.settingsView.title"></span></a>
+                <a href="components/contactsView/view.html" data-icon="contacts"><span class="navigation-link-text" data-bind="text: strings.contactsView.title"></span></a>
+                <a href="components/registroView/registroView.html" data-icon="contacts"><span class="navigation-link-text" data-bind="text: strings.registroView.title"></span></a>
+            </div>
+            <div id="navigation-container-more" style="display: none">
+            </div>
+        </footer>
+    </div>
+
+    <div data-role="layout" data-id="main-nonav">
+        <header data-role="header">
+            <div data-role="navbar">
+                <span data-role="view-title"></span>
+            </div>
+        </header>
+        <footer data-role="footer">
+        </footer>
+    </div>
+    
+    <!-- Views --> 
+    
+    
+    <!-- View inicio -->
+    <div id="view-inicio" data-role="splitview"
+        data-title="Inicio"
+        data-model="app.inicioService.viewModel"
+        data-init="app.inicioService.viewModel.responsive"
+        data-show="app.inicioService.viewModel.mostrar" data-use-native-scrolling="false" data-stretch="true">
+        
+        <header class="cont-logo" data-role="header">
+            <img src="images/logo.png" width="200">
+            <div id="cont-n" class="" data-role="navbar">
+                <a class="item1 active" data-role="button" data-click="app.inicioService.viewModel.viewLogin" data-align="left">INICIO DE SESIÓN</a>
+                <a class="item2" data-role="button" data-click="app.inicioService.viewModel.viewRegistro" data-align="left">REGISTRO</a>                  
+            </div>
+        </header>
+        <div id="inicio-pane" data-role="pane" data-navigate="onNavigate" data-transition="fade" data-loading="Cargando">
+            <div data-role="view" id="view-login" data-model="app.inicioService.viewModel" data-use-native-scrolling="false"> 
+                <form id="cForm" data-bind="events: { submit: validar }" novalidate>
+                    <input type="text" id="username" class="campotxt" placeholder="ID LOCAL">
+                    <input type="password" id="password" class="campotxt" placeholder="CONTRASEÑA">
+                    <div class="cont-t">
+                        <a href="#">RECUPERAR CONTRASEÑA</a>   
+                    </div>
+                    <a onclick="app.inicioService.viewModel.validarTouchID()">
+                        <img src="images/touch.png" alt="">
+                    </a>
+                    <div class="cont-b">
+                        <button type="submit">INICIAR SESIÓN</button>
+                    </div>    
+                </form> 
+            </div>
+            <div data-role="view" id="view-registro" data-model="app.inicioService.viewModel" data-use-native-scrolling="false">  
+               <form id="bForm" data-bind="events: { submit: validarRegistro }" novalidate>
+                    <p for="nombre">NOMBRES<span>*</span></p>
+                    <input type="text" id="name" class="campoRegistro" placeholder="NOMBRES COMPLETOS">
+                    <p for="apellid">APELLIDOS<span>*</span></p>
+                    <input type="text" id="lastname" class="campoRegistro" placeholder="APELLIDOS">
+                    <p for="correo">CORREO<span>*</span></p>
+                    <input type="email" id="email" class="campoRegistro" placeholder="ejempl@dominio.com">                       
+                    <p for="fecha">FECHA DE NACIMIENTO<span>*</span></p>
+                    <input class="date campoRegistro" id="date" type="date" placeholder="FECHA">
+                    <p for="ident">#ID LOCAL<span>*</span></p>
+                    <input type="tel" id="idNal" class="campoRegistro" placeholder="43234234234">
+                    <p for="nacionalidad">NACIONALIDAD PPAL<span>*</span></p>
+                   <select name="nac" id="nation"class="campoRegistro">
+                       <option value="COL">COLOMBIA</option>
+                       <option value="BR">BRASIL</option>
+                       <option value="ARG">ARGENTINA</option>
+                   </select>
+                    <p for="pasaporte"># DE PASAPORTE<span>*</span></p>
+                    <input type="tel" id="pass" class="campoRegistro" placeholder="232134124">
+                    <p for="dirr">DIRECCIÓN<span>*</span></p>
+                    <input type="text" id="dirr" class="campoRegistro" placeholder="ejemplo: calle 5">                   
+                    <p for="pasword">INGRESE CONTRASEÑA<span>*</span></p>
+                    <input type="password" id="psw" class="campoRegistro" placeholder="">
+                    
+                    <h3>CONTACTO DE EMERGENCIA</h3>
+                    
+                    <p for="nombrec">NOMBRES<span>*</span></p>
+                    <input type="text" id="cNames" class="campoRegistro" placeholder="NOMBRES COMPLETOS">
+                    <p for="correo">CORREO<span>*</span></p>
+                    <input type="email" id="emailc" class="campoRegistro" placeholder="ejempl@dominio.com">
+                    <p for="telefono">TELÉFONO<span>*</span></p>
+                    <input type="tel" id="cTel" class="campoRegistro" placeholder="123123">
+                    
+                    <div class="cont-bb">
+                        <button type="submit">REGISTRARTE</button>
+                    </div>                    
+
+               </form>   
+            </div>
+        </div>    
+        
+
+    </div>
+    
+    <!-- Transiciones -->
+    
+    <div id="view-transicion-registro" 
+        data-role="view"
+        data-title="Transición registro"
+        data-model="app.inicioService.viewModel"
+        data-show="app.inicioService.viewModel.tRegistro"
+        data-use-native-scrolling="false">
+        
+        <img class="logo" src="images/logo.png" width="200" style="margin:10%;">
+        <img class="gif" src="images/gif_2.gif" width="100%">  
+        <p style="color:#FFF">Firmando en CryptoSURA</p>
+    </div>
+    <div id="view-transicion-login" 
+        data-role="view"
+        data-title="Transición login"
+        data-model="app.inicioService.viewModel"
+        data-show="app.inicioService.viewModel.tLogin"
+        data-use-native-scrolling="false">
+        
+        <img class="logo" src="images/logo.png" width="200" style="margin:10%;">
+        <img class="gif" src="images/gif_2.gif" width="100%">       
+        <p style="color:#FFF">Auténticando en CryptoSURA</p>
+    </div>
+    
+    <!--Mneú-home-->
+    
+    <div id="view-menu" 
+        data-role="view"
+        data-title="Menú"
+        data-model="app.menuService.viewModel"
+        data-init="app.menuService.viewModel.responsive"
+        data-show="app.menuService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <a onclick="app.inicioService.viewModel.cerrarSesion()" class="cerrarSesion"><img src="images/cerrarsesion.png" alt=""></a>
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+        <div class="menu1">
+            <div class="menu">
+              <a href="#view-clima"><div class="item"><img src="images/menu/lluvia.png" alt=""><p>Metereológia</p></div></a>
+              <a href="#view-moneda"><div class="item"><img src="images/menu/cambio.png" alt=""><p>Moneda</p></div></a>
+              <a href="#view-conecciones"><div class="item"><img src="images/menu/enchufe.png" alt=""><p>Conexiones</p></div></a>
+              <a href="#view-wifi"><div class="item"><img src="images/menu/wifi.png" alt=""><p>Internet</p></div></a>
+              <a href="#view-transporte"><div class="item"><img src="images/menu/bus.png" alt=""><p>Transporte</p></div></a>
+              <a href="#view-emergencia"><div class="item"><img src="images/menu/cruz.png" alt=""><p>Emergencia</p></div></a>
+              <a href="#view-emergenciaMedica"><div class="item"><img src="images/menu/ambu.png" alt=""><p>Hospitales</p></div></a>
+              <a href="#view-emergenciaOdontologica"><div class="item"><img src="images/menu/odon.png" alt=""><p>Odontológica</p></div></a>
+              <a href="#view-asistenciaLegal"><div class="item"><img src="images/menu/juez.png" alt=""><p>Legal</p></div></a>
+              <a href="#view-consul"><div class="item"><img src="images/menu/globe.png" alt=""><p>Consulados</p></div></a>
+              <a href="#view-poliza"><div class="item"><img src="images/menu/escudo.png" alt=""><p>Polizas</p></div></a>
+              <a href="#view-alertas"><div class="item"><img src="images/menu/sire.png" alt=""><p>Alertas</p></div></a>  
+            </div>            
+        </div>
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="f1" href="#view-menu"data-click="app.inicioService.viewModel.iniciar"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes" data-click="app.viajesService.viewModel.iniciar"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge" data-click="app.conciergeService.viewModel.iniciar"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"data-click="app.idService.viewModel.iniciar"><img src="images/menu/id.png" alt=""></a>
+            </div>
+            <div id="navigation-container-more" style="display: none">
+            </div>
+        </footer>        
+    </div>
+    
+<!--view Metereologia-->
+    
+    <div id="view-clima" 
+        data-role="view"
+        data-title="Meterorologia"
+        data-model="app.meteorologiaService.viewModel"
+        data-show="app.meteorologiaService.viewModel.iniciar"
+        data-init="app.meteorologiaService.viewModel.responsive"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+            <div id="clima">
+                <div class="cont-sun">
+                    <img class="img_clima_actual" alt="">
+                    <div>
+                        <p class="ciudad_actual"></p>
+                        <p class="clima_actual"></p>
+                        <h1 class="temp_actual"></h1>
+                    </div>
+                </div>  
+                <div class="cont-icos1">
+                    <div class="cont-sub">
+                        <img src="images/clima/icoLluvia.png" alt="">
+                        <div>
+                            <p>Mañana</p>
+                            <P>Probabilidad de lluvia</P>
+                        </div>                        
+                    </div>
+                </div> 
+                <div class="cont-icos2">
+                    <div class="cont-sub">
+                        <img src="images/clima/icoNublado.png" alt="">
+                        <div>
+                            <p>Tarde</p>
+                            <P>Mayormente nublado</P>
+                        </div>                        
+                    </div>                    
+                </div>
+                <div class="cont-icos3">
+                    <div class="cont-sub">
+                        <img src="images/clima/icoNoche.png" alt="">
+                        <div>
+                            <p>Noche</p>
+                            <P>Vientos y precipitación</P>
+                        </div>                        
+                    </div>                    
+                </div>                
+            </div>
+        <footer data-role="footer">
+            <div id="dia">
+                <ul>
+                    <li><p>Lun</p><img src="images/clima/icoEstado1.png" alt=""></li>
+                    <li><p>Mar</p><img src="images/clima/icoEstado1.png" alt=""></li>
+                    <li><p>Mie</p><img src="images/clima/icoEstado2.png" alt=""></li>
+                    <li><p>Jue</p><img src="images/clima/icoEstado2.png" alt=""></li>
+                    <li><p>vie</p><img src="images/clima/icoEstado1.png" alt=""></li>
+                </ul>
+            </div>
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>
+    
+<!--view Moneda-->
+    
+    <div id="view-moneda" 
+        data-role="view"
+        data-title="Moneda"
+        data-model="app.monedaService.viewModel"
+        data-show="app.monedaService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+            <div id="cont-moneda">
+                <form data-bind="events: { submit: calcular }" novalidate>
+                    <table>
+                      <tr>
+                        <td id="monedaNal"><img  alt=""></td>
+                        <td><input type="number" class="campoRegistro" id="cantidad"></td>
+                      </tr>
+                      <tr>
+                          <td></td>
+                          <td>
+                              <div class="cont-b">
+                               <button id="calcularMoneda" type="submit">CALCULAR</button>
+                              </div>                               
+                          </td>
+                      </tr>
+                      <tr>
+                        <td id="monedaNal1"><img  alt=""></td>
+                        <td id="monedaNalresult1"></td>
+                      </tr>
+                      <tr>
+                        <td id="monedaNal2"><img  alt=""></td>
+                        <td id="monedaNalresult2"></td>
+                      </tr>
+                      <tr>
+                        <td id="monedaNal3"><img alt=""></td>
+                        <td id="monedaNalresult3"></td>
+                      </tr>  
+                    </table>                    
+                </form>               
+            </div>
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>
+<!--view Conecciones-->
+    
+    <div id="view-conecciones" 
+        data-role="view"
+        data-title="Conexiones"
+        data-model="app.coneccionesService.viewModel"
+        data-show="app.coneccionesService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+        
+        <div id="cont-enchufe">
+            <div class="form-control">
+                <p>Seleccionar País</p>
+                <select name="" id="coneccion">
+                    <option value="col">Colombia</option>
+                    <option value="arg">Argentina</option>
+                    <option value="brz">Brasil</option>
+                </select>
+            </div>
+            <img id="imgEn1" alt="">
+            <div class="cont-chufes">
+                <div class="col5">
+                    <img id="imgEn2" alt="">
+                    <p id="textCon1"></p>
+                </div>
+                <div class="col5">
+                    <img id="imgEn3" alt="">
+                    <p id="textCon2"></p>
+                </div>
+            </div>
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div> 
+    
+<!--view wifi-->
+    
+    <div id="view-wifi" 
+        data-role="view"
+        data-title="Wifi"
+        data-model="app.wifiService.viewModel"
+        data-show="app.wifiService.viewModel.iniciar"
+        data-use-native-scrolling="false" data-stretch="true">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+        
+        <div id="map"></div>    
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div> 
+    
+<!--view Transporte-->    
+    
+    <div id="view-transporte" 
+        data-role="view"
+        data-title="Transporte"
+        data-model="app.transporteService.viewModel"
+        data-show="app.transporteService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+        
+        <div id="cont-transporte">
+            <div class="form-control">
+                <p>Seleccionar País</p>
+                <select name="" id="TransportePais">
+                    <option value="col">Colombia</option>
+                    <option value="arg">Argentina</option>
+                    <option value="brz">Brasil</option>
+                </select>
+                <h3>Aeropuerto Internacional</h3>
+                <h4>el transporte disponible es</h4>
+            </div>
+            <div class="transporte">
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><div><img src="images/transporte/iconBus.png" alt=""></div><span class="pad">Bus</span></h4>
+                    <p id="textBus"></p>
+                </div>
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><div><img src="images/transporte/iconTaxi.png" alt=""></div><span class="pad">Taxi</span></h4>
+                    <p id="textTaxi"></p>
+                </div> 
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><div><img src="images/transporte/iconUber.png" alt=""></div><span class="pad">Uber</span></h4>
+                    <p id="textUber"></p>
+                </div>
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><div class="ws"><img src="images/transporte/iconRent.png" alt=""></div><span class="pad">Car Rental</span></h4>
+                    <p id="textRent"></p>
+                </div>                                
+            </div>  
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>   
+    
+<!--view # Emergencia-->    
+    
+    <div id="view-emergencia" 
+        data-role="view"
+        data-title="Numero de emergencia"
+        data-model="app.emergenciaService.viewModel"
+        data-show="app.emergenciaService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+        <h2>Números de emergencia</h2>       
+        <div id="cont-emergencia">
+           <div class="form-control">
+                <p>Seleccionar País</p>
+                <select name="" id="numEmergencia">
+                    <option value="col">Colombia</option>
+                    <option value="arg">Argentina</option>
+                    <option value="brz">Brasil</option>
+                </select>
+            </div>
+            <table id="listNum">
+                <tbody>
+                    
+                </tbody>
+            </table>   
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div> 
+
+    <!--view Emergencia medica-->    
+    
+    <div id="view-emergenciaMedica" 
+        data-role="view"
+        data-title="Emergencia Medica"
+        data-model="app.emergenciaMedicaService.viewModel"
+        data-show="app.emergenciaMedicaService.viewModel.iniciar"
+        data-use-native-scrolling="false" data-stretch="true">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+        
+        <div id="map2"></div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>
+    
+    <!--view Emergencia odontologica-->    
+    
+    <div id="view-emergenciaOdontologica" 
+        data-role="view"
+        data-title="Emergencia Odontologica"
+        data-model="app.emergenciaOdontologicaService.viewModel"
+        data-show="app.emergenciaOdontologicaService.viewModel.iniciar"
+        data-use-native-scrolling="false" data-stretch="true">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+        </header>
+        
+        <div id="map3"></div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>
+    
+    <!--view Asistencia legal-->    
+    
+    <div id="view-asistenciaLegal" 
+        data-role="view"
+        data-title="Asistencia legal"
+        data-model="app.asistenciaLegalService.viewModel"
+        data-show="app.asistenciaLegalService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+        <div id="cont-legal">
+            <h2>Asistencia legal</h2>
+            <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                <h4><div><img src="images/icoHora.png" alt=""></div><span class="pad">Horario</span></h4>
+                <p>De 8:00 am a 1:00 pm</p>
+                <p>De 2:00 pm a 5:00 pm</p>
+            </div>            
+            <div class="cont-a">
+                <a data-role="button" href="#view-formLegal">CONTACTAR</a>
+            </div>
+            <div class="cont-a">
+                <p>(034)2602100</p>
+            </div>
+        </div>
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>
+
+    <!--view formulario legal-->    
+    
+    <div id="view-formLegal" 
+        data-role="view"
+        data-title="Formulario legal"
+        data-model="app.formLegalService.viewModel"
+        data-show="app.formLegalService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo"  width="200">
+        </header>
+        
+        <div id="form-legal">
+            <form data-bind="events: { submit: validarFormLegal }" novalidate>
+                <h3>Cúentanos en que te podemos ayudar </h3>
+                <p for="name">Nombre<span>*</span></p>
+                <input type="text" class="campoRegistro" id="name" placeholder="Nombres Completos">
+                <p for="email">Correo<span>*</span></p>
+                <input type="email" class="campoRegistro" id="email" placeholder="ejempl@dominio.com">
+                <p for="select">Asistencia legal</p>
+                <select name="" id="asistencia">
+                    <option value="1">Temas de asistencia legal</option>
+                    <option value="2">Temas 1</option>
+                    <option value="3">Temas 2</option>
+                </select>
+                <textarea name="" id="mensaje" cols="30" rows="10" placeholder="Mensaje"></textarea>
+                <div class="cont-b">
+                    <button type="submit">SOLICITAR AYUDA LEGAL</button>
+                </div>                 
+            </form>
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>    
+    
+    <!--view Consul-->    
+    
+    <div id="view-consul" 
+        data-role="view"
+        data-title="Consul"
+        data-model="app.consulService.viewModel"
+        data-show="app.consulService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+        
+        <div id="cont-consul">
+            <div class="selcConsul">
+                <p>Seleccionar País</p>
+                <select name="" id="consul">
+                    
+                </select>
+            </div>
+            <img class="ppal" alt="">
+            <div class="cont-infoCon">
+                <table>
+                  <tr>
+                    <td><img src="images/consul/icoDirr.png" alt=""></td>
+                    <td><h3>Consul</h3><p id="nameConsul"></p></td>
+                  </tr>
+                  <tr>
+                    <td><img src="images/consul/icoMap.png" alt=""></td>
+                    <td><h3>Dirección del consulado</h3><p id="dirrConsul"></p></td>
+                  </tr>
+                  <tr>
+                    <td><img src="images/consul/icoTel.png" alt=""></td>
+                    <td><h3>Teléfonos de atención</h3><p id="telConsul"></p></td>
+                  </tr>
+                  <tr>
+                    <td><img src="images/id/icoMsn.png" alt=""></td>
+                    <td><h3>Email</h3><p id="mailConsul"></p></td>
+                  </tr>
+                </table>                
+            </div>
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>
+    
+    <!--view Poliza-->    
+    
+    <div id="view-poliza" 
+        data-role="view"
+        data-title="Poliza"
+        data-model="app.polizaService.viewModel"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>
+        
+        <div id="cont-poliza">
+            <h3>Pólizas SURA</h3>
+            <div class="infoPol">
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><img src="images/poliza/seguro.png" alt=""><p>Vida</p></h4>
+                    <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti velit adipisci quod dolore quos doloribus veritatis nemo in?</p>
+                    <ul onclick="cordova.InAppBrowser.open('https://www.segurossura.com.co/Documentos/condicionados/Empresas/ingenieria/seguro-multirriesgo-empresarial.pdf', '_blank', 'location=yes');">
+                        <li><p class="lorem">Certificado.pdf</p> </li>
+                        <li class="li-img"><img src="images/poliza/pdf.png" alt=""></li>
+                    </ul>                    
+                </div>
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><img src="images/poliza/salud.png" alt=""><p>Salud</p></h4>
+                    <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti velit adipisci quod dolore quos doloribus veritatis nemo in?</p>
+                    <ul onclick="cordova.InAppBrowser.open('https://www.segurossura.com.co/Documentos/condicionados/Empresas/ingenieria/seguro-multirriesgo-empresarial.pdf', '_blank', 'location=yes');">
+                        <li><p class="lorem">Certificado.pdf</p> </li>
+                        <li class="li-img"><img src="images/poliza/pdf.png" alt=""></li>
+                    </ul>
+                </div> 
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><img src="images/poliza/vivienda.png" alt=""><p>Hogar</p></h4>
+                    <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti velit adipisci quod dolore quos doloribus veritatis nemo in?</p>
+                    <ul onclick="cordova.InAppBrowser.open('https://www.segurossura.com.co/Documentos/condicionados/Empresas/ingenieria/seguro-multirriesgo-empresarial.pdf', '_blank', 'location=yes');">
+                        <li><p class="lorem">Certificado.pdf</p> </li>
+                        <li class="li-img"><img src="images/poliza/pdf.png" alt=""></li>
+                    </ul>                    
+                </div>
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><img src="images/poliza/movilidad.png" alt=""><p>Auto</p></h4>
+                    <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti velit adipisci quod dolore quos doloribus veritatis nemo in?</p>
+                    <ul onclick="cordova.InAppBrowser.open('https://www.segurossura.com.co/Documentos/condicionados/Empresas/ingenieria/seguro-multirriesgo-empresarial.pdf', '_blank', 'location=yes');">
+                        <li><p class="lorem">Certificado.pdf</p> </li>
+                        <li class="li-img"><img src="images/poliza/pdf.png" alt=""></li>
+                    </ul>                    
+                </div>                                
+            </div>            
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>  
+
+        <!--view Alertas-->    
+    
+    <div id="view-alertas" 
+        data-role="splitview"
+        data-title="Alertas"
+        data-model="app.alertasService.viewModel"
+        data-show="app.alertasService.viewModel.iniciar"
+        data-hide="app.alertasService.viewModel.eliminarAlerta"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img id="arreglarLogo" class="paisLogo" width="200">
+            <div id="cont-al" class="" data-role="navbar">
+                <a class="item1 active" data-role="button" data-click="app.alertasService.viewModel.viewInformativas" data-align="left">INFORMATIVAS</a>
+                <a class="item2" data-role="button" data-click="app.alertasService.viewModel.viewProactivas" data-align="left">PROACTIVAS</a>                  
+            </div>            
+        </header>
+        
+        <div id="cont-alertas" data-role="pane" data-navigate="onNavigate" data-transition="fade" data-loading="Cargando">
+            <div id="informativa" data-role="view" data-model="app.alertasService.viewModel">
+                <a href="#foo" id="alerta1" data-rel="modalview" data-role="button">
+                    <h4>ALERTA DE SALUD</h4>
+                    <div class="cont-more">
+                        <P>Alerta  en Guarulhos, BR por brote de chikunguña</P>
+                        <p>Ver mas</p>
+                    </div>
+                </a>
+                <div data-role="modalview" data-transition="slide" id="foo">
+                    <a data-align="right" data-click="closeModalView" data-role="button">X</a>    
+                    <h3>Alerta  en Guarulhos, BR por brote de chikunguña</h3>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, qui ipsa saepe! Maiores laboriosam facilis, sit quis at nobis dolores et quasi earum consectetur asperiores tempora a libero id, ex debitis unde iure quisquam quo dolore laudantium, aspernatur ad. Iure.
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, qui ipsa saepe! Maiores laboriosam facilis, sit quis at nobis dolores et quasi earum consectetur asperiores tempora a libero id, ex debitis unde iure quisquam quo dolore laudantium, aspernatur ad. Iure.  
+                    </p>
+                </div>
+                <a href="#foo1" id="alerta2" data-rel="modalview" data-role="button">
+                    <h4>ALTERACIONES VIOLENTAS EN VÍA PÚBLICA</h4>
+                    <div class="cont-more">
+                        <P>Protesta violenta en Argentina</P>
+                        <p>Ver mas</p>
+                    </div>
+                </a>
+                <div data-role="modalview" data-transition="slide" id="foo1">
+                    <a data-align="right" data-click="closeModalView" data-role="button">X</a>        
+                    <h3>Protesta violenta en Brasil</h3>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, qui ipsa saepe! Maiores laboriosam facilis, sit quis at nobis dolores et quasi earum consectetur asperiores tempora a libero id, ex debitis unde iure quisquam quo dolore laudantium, aspernatur ad. Iure.
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, qui ipsa saepe! Maiores laboriosam facilis, sit quis at nobis dolores et quasi earum consectetur asperiores tempora a libero id, ex debitis unde iure quisquam quo dolore laudantium, aspernatur ad. Iure.  
+                    </p>
+                </div>
+                <a href="#foo3" id="alerta3" data-rel="modalview" data-role="button">
+                    <h4>ALTERACIONES VIOLENTAS EN VÍA PÚBLICA</h4>
+                    <div class="cont-more">
+                        <P>Protesta violenta en Colombia</P>
+                        <p>Ver mas</p>
+                    </div>
+                </a>
+                <div data-role="modalview" data-transition="slide" id="foo3">
+                    <a data-align="right" data-click="closeModalView" data-role="button">X</a>              
+                    <h3>Protesta violenta en Colombia</h3>
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, qui ipsa saepe! Maiores laboriosam facilis, sit quis at nobis dolores et quasi earum consectetur asperiores tempora a libero id, ex debitis unde iure quisquam quo dolore laudantium, aspernatur ad. Iure.
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas, qui ipsa saepe! Maiores laboriosam facilis, sit quis at nobis dolores et quasi earum consectetur asperiores tempora a libero id, ex debitis unde iure quisquam quo dolore laudantium, aspernatur ad. Iure.  
+                    </p>
+                </div>                
+            </div>  
+            <div id="proactiva" data-role="view" data-model="app.alertasService.viewModel">
+                 <div id="cont-pro">
+                     <p>"Se ha producido un sismo de 5.6 en la Escala de Ritcher a X kilometros de su ubicación, por favor confirme que se encuentra bien."</p>
+                     <div class="cont-b">
+                         <a href="#confirmarProactiva" data-rel="modalview" data-role="button">ESTOY BIEN</a>
+                     </div>                      
+                 </div>
+                <div data-role="modalview" data-transition="slide" id="confirmarProactiva">
+                    <a data-align="right" data-click="closeModalView" data-role="button">X</a>
+                    <h3>Notificación correcta</h3>
+                    <p>
+                        ¡Nos alegra que estés bien! Hemos notificado a tu contacto de emergencia.
+                     </p>
+                </div>   
+            </div>          
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="activeArr f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div> 
+    
+        <!--view Viajes-->    
+    
+    <div id="view-viajes" 
+        data-role="view"
+        data-title="Alertas"
+        data-model="app.viajesService.viewModel"
+        data-show="app.viajesService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200"> 
+            <img class="paisLogo" width="200">
+        </header>
+        
+        <div id="cont-viajes">
+            <h2>Bienvenido a tu Concierge<br> de viajes sura</h2>
+            <form action="">
+                <input type="text" placeholder="NÚMERO SABRE (EJAB5HJ9)">
+                <input type="text" placeholder="PRIMER APELLIDO">
+                <div class="cont-a">
+                    <a id="interna" data-role="button" href="#view-internaViajes">CONTACTAR</a>
+                </div>                 
+            </form>
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div> 
+    
+        <!--view internaViajes-->    
+    
+    <div id="view-internaViajes"
+        data-role="splitview"
+        data-title="Vieajes"
+        data-model="app.internaViajesService.viewModel"
+        data-show="app.internaViajesService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img id="arreglarLogo" class="paisLogo" width="200">
+            <div id="cont-al" class="" data-role="navbar">
+                <a class="item1 active" data-role="button" data-click="app.internaViajesService.viewModel.viewInfoViaje" data-align="left">INFO. VIAJE</a>
+                <a class="item2" data-role="button" data-click="app.internaViajesService.viewModel.viewPolizaViaje" data-align="left">INFO. PÓLIZA</a>                  
+            </div>           
+        </header>
+        
+        <div id="cont-infoViaje" data-role="pane" data-navigate="onNavigate" data-transition="fade" data-loading="Cargando">
+            <div id="informacion" data-role="view" data-model="app.alertasService.viewModel">
+                <div class="infoId">
+                    <div class="cont-item">
+                        <div class="logoNacion">
+                            <img class="fotoUsuario" alt="">
+                        </div>
+                        <img class="paisPerson" width="200">
+                    </div>
+                    <div class="cont-item">
+                        <h3></h3>
+                        <p><span>Reserva:</span>VHOIPZ </p>
+                        <p><span>Seguro de vuelo:</span> OK</p>
+                    </div>                   
+                </div>
+                <h4><p>Dic 21, 2017</p></h4>
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><p>Vuelo AV 092</p></h4>
+                    <div class="infoId2">
+                        <div class="cont-item2">
+                            <table>
+                              <tr>
+                                <td class="viajeIda"><p>Hora: 9:15 am</p><h3>MDE</h3><p>Aeropuerto Int<br> Jose Maria Córdoba<br> Medellin, CO</p></td>
+                                <td><img src="images/planeIn.png" alt=""></td>
+                                <td class="viajeIda2"><p>Hora: 6:15 pm</p><h3>GRU</h3><p>Aeropuerto Int<br> Sao<br> Pablo<br> Guarulhos, BR</p></td>
+                              </tr>
+                            </table>
+                        </div>                 
+                    </div>
+                </div>
+                <h4><p>Ene 15, 2018</p></h4>
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><p>Vuelo AV 094</p></h4>
+                    <div class="infoId22">
+                        <div class="cont-item2">
+                            <table>
+                              <tr>
+                                <td class="viajeIda"><p>Hora: 6:15 pm</p><h3>GRU</h3><p>Aeropuerto Int<br> Sao<br> Pablo<br> Guarulhos, BR</p></td>
+                                <td><img src="images/planeIn2.png" alt=""></td>
+                                <td class="viajeIda2"><p>Hora: 9:15 am</p><h3>MDE</h3><p>Aeropuerto Int<br> Jose Maria Córdoba<br> Medellin, CO</p></td>
+                              </tr>
+                            </table>
+                        </div>                   
+                    </div>
+                </div>
+            </div>  
+            <div id="poliza" data-role="view" data-model="app.alertasService.viewModel">
+                <div class="cont-poliza">
+                    <p><span class="colorSpan">Tomador de poliza</span><br><span id="poliName">Fredy Leon</span></p>
+                    <p><span class="colorSpan">Póliza Número</span><br>982becfd83578aa0ab74624dba05750<br>f639d8940e2c2f78be59061aa7c47a464</p>
+                    <p><span class="colorSpan">Vuelo</span><br>AA 924</p>
+                    <p><span class="colorSpan">Origen</span><br>MDE Diciembre 20, 2017/11:15am(Hora local)</p>
+                    <p><span class="colorSpan">Destino</span><br>MIA Diciembre 20, 2017/11:15(Hora local)</p>
+                    <p><span class="colorSpan">Inicio de Póliza</span><br>Dic 20 2017/7:05am (Hora local)</p>
+                    <p><span class="colorSpan">Vvencimiento de Póliza</span><br>Dic 20 2017/12:00pm (Hora local)</p>
+                    <p><span class="colorSpan">Valor Póliza</span><br>15.000 COP</p>
+                    <p>Compoensación</p>
+                    <div class="compensacion">
+                        <div class="infoId2">
+                            <div class="cont-item3">
+                                <h3>Demora en<br> minutos</h3>
+                                <p>15-29</p>
+                                <p>33-44</p>
+                                <p>45+</p>
+                                <p>Cancelación</p>
+                                <p>Reprogramación</p>
+                            </div>
+                            <div class="cont-item3">
+                                <h3>Pago de indemnización</h3>
+                                <p>50.000COP</p>
+                                <p>75.000COP</p>
+                                <p>150.000COP</p>
+                                <p>1.500.000COP</p>
+                                <p>1.000.000COP</p>
+                            </div>                   
+                        </div>                        
+                    </div>
+                    <p><span class="colorSpan">Desceso en vuelo:</span><br>50.000.000 (Beneficiario, su contacto de emergencia)</p>
+                </div>
+            </div>          
+        </div>         
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>    
+    
+        <!--view concierge-->    
+    
+    <div id="view-concierge"
+        data-role="view"
+        data-title="Concierge"
+        data-model="app.conciergeService.viewModel"
+        data-show="app.conciergeService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">
+            <img class="paisLogo" width="200">
+        </header>       
+        
+        <div id="cont-concierge">
+            <div class="cc">
+                <h2></h2>
+                <p ><span class="ciudad_concierge"></span> <br> ID: <span class="cc2"></span></p>
+                <p>Tu concierge esta atento a recibir tu llamada para revisar tus coberturas locales</p>
+            </div>
+            <div class="cont-collp">
+                <h3>PREGUNTAS FRECUENTES</h3>
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><p>¿Pregunta N° 1?</p></h4>
+                    <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti velit adipisci quod dolore quos doloribus veritatis nemo in?</p>
+                </div>            
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><p>¿Pregunta N° 2?</p></h4>
+                    <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti velit adipisci quod dolore quos doloribus veritatis nemo in?</p>
+                </div>
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><p>¿Pregunta N° 3?</p></h4>
+                    <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti velit adipisci quod dolore quos doloribus veritatis nemo in?</p>
+                </div>
+                <div id="collapsible" data-role="collapsible" data-icon-position="right">
+                    <h4><p>¿Pregunta N° 4?</p></h4>
+                    <p class="lorem">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti velit adipisci quod dolore quos doloribus veritatis nemo in?</p>
+                </div>             
+            </div>
+            <div class="atencion">
+                <h3>AYUDA</h3>
+                <div class="tel">
+                    <table>
+                      <tr>
+                        <th><img src="images/tel.png" alt=""></th>
+                        <th><p>(+57)3159270076</p></th>
+                      </tr>
+                    </table>                    
+                </div>
+                <div class="cel">
+                    <table>
+                      <tr>
+                        <th><img src="images/wapp.png" alt=""></th>
+                        <th><p><a style="text-decoration:none;" href="https://api.whatsapp.com/send?phone=+573159270076">(+57)3159270076</a></p></th>
+                      </tr>
+                    </table>                     
+                </div>                
+            </div>
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>   
+    
+        <!--view id-->    
+    
+    <div id="view-id"
+        data-role="view"
+        data-title="ID"
+        data-model="app.idService.viewModel"
+        data-show="app.idService.viewModel.iniciar"
+        data-use-native-scrolling="false">
+        
+        <header class="logo-menu" data-role="header">
+            <img class="logo" src="images/logo.png" width="200">  
+            <img class="paisLogo" width="200">
+        </header>
+        
+        <div id="cont-id">
+            <div class="infoId">
+                <div class="padId">
+                    <div onclick="app.idService.viewModel.cambiarFotoPerfil()" class="cont-item">
+                        <div class="logoNacion">
+                            <img class="fotoUsuario" alt="">
+                        </div>
+                        <img class="paisPerson" width="200">
+                    </div>    
+                    <div class="cont-item">
+                        <h3> <span> </span></h3>
+                        <p><span class="ciudad"></span><br>ID: <span class="idNal"></span></p>
+                    </div>
+                </div>
+                <table>
+                  <tr>
+                    <td><img src="images/id/icoMap.png" alt=""></td>
+                    <td><span class="tableColor">Dirección: </span><span class="dirr"></span></td>
+                  </tr>
+                  <tr>
+                    <td><img src="images/id/icoTierra.png" alt=""></td>
+                    <td><span class="tableColor">Nacionalidad: </span><span class="nation"></span></td>
+                  </tr>
+                  <tr>
+                    <td><img src="images/id/icoCalendar.png" alt=""></td>
+                    <td><span class="tableColor">Fecha de nacimiento: </span><span class="birth"></span></td>
+                  </tr>
+                  <tr>
+                    <td><img src="images/id/icoId.png" alt=""></td>
+                    <td><span class="tableColor">No pasaporte: </span><span class="passport"></span></td>
+                  </tr>
+                </table>          
+                <h3>CONTACTO DE EMERGENCIA</h3>        
+                <table>
+                  <tr>
+                    <td><img src="images/id/icoName.png" alt=""></td>
+                    <td><span class="tableColor">Nombre: </span><span class="enombre"></span></td>
+                  </tr>
+                  <tr>
+                    <td><img src="images/id/icoTel.png" alt=""></td>
+                    <td><span class="tableColor">Teléfono: </span><span class="etel"></span></td>
+                  </tr>
+                  <tr>
+                    <td><img src="images/id/icoMsn.png" alt=""></td>
+                    <td><span class="tableColor">Mail: </span><span class="cmail"></span></td>
+                  </tr>
+                </table> 
+                <div class="chain">
+                    <h4>ID CryptoSURA</h4>
+                    <p>982becfd83578aa0ab74624dba057<br>50f639d8940e2c2f78be59061aa7c47a464</p>
+                </div>
+            </div>            
+        </div>
+        
+        <footer data-role="footer">
+            <div data-role="tabstrip" id="navigation-container">
+                <a class="f1" href="#view-menu"><img src="images/menu/home.png" alt=""></a>
+                <a class="f2" href="#view-viajes"><img src="images/menu/plane.png" alt=""></a>
+                <a class="f3" href="#view-concierge"><img  src="images/menu/concierge.png" alt=""></a>
+                <a class="f4" href="#view-id"><img src="images/menu/id.png" alt=""></a>
+            </div> 
+        </footer>        
+    </div>      
+    
+    <script type="text/javascript">
+        function closeModalView(e) {
+            // find the closest modal view, relative to the button element.
+            var modalView = e.sender.element.closest("[data-role=modalview]").data("kendoMobileModalView");
+            modalView.close();
+        }
+    </script>      
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmQuNfzWQhuZYVycp4U_OBx0BTy03Ilvc">
+    </script>
+</body>
+
+</html>
