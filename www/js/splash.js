@@ -52,7 +52,7 @@
                                 window.localStorage.setItem('usuarioCTEL',usuario.usuarioCTEL);
                                 window.localStorage.setItem('usuarioFOTO',usuario.usuarioFOTO);
                                 $('.fotoUsuario').attr('src',usuario.usuarioFOTO);
-                                $.getJSON("http://freegeoip.net/json/", function (data) {
+                                $.getJSON("http://api.ipstack.com/ 190.147.84.233?access_key=b83c0f15b8461a41338fd237cae80587", function (data) {
                                      console.log(data);    
                                     window.localStorage.setItem('ubicacionCity',data.city);
                                     window.localStorage.setItem('ubicacionCountry',data.country_name);                                                   
