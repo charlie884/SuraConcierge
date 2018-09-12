@@ -66,11 +66,17 @@
         },
         "cordova-plugin-touch-id": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova-plugin-local-notification": {
+            "PACKAGE_NAME": "com.phonegap.suraConcierge"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova-plugin-badge": {
+            "PACKAGE_NAME": "com.phonegap.suraConcierge"
         }
     }
 }
