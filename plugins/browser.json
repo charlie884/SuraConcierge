@@ -75,7 +75,7 @@
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         },
-        "cordova-plugin-badge": {
+        "cordova-plugin-app-event": {
             "PACKAGE_NAME": "com.phonegap.suraConcierge"
         }
     }

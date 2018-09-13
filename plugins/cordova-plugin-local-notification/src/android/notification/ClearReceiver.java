@@ -21,17 +21,14 @@
  * @APPPLANT_LICENSE_HEADER_END@
  */
 
-package de.appplant.cordova.plugin.localnotification;
-
-import de.appplant.cordova.plugin.notification.Notification;
-
+package de.appplant.cordova.plugin.notification;
 
 /**
  * The clear intent receiver is triggered when the user clears a
  * notification manually. It un-persists the cleared notification from the
  * shared preferences.
  */
-public class ClearReceiver extends de.appplant.cordova.plugin.notification.ClearReceiver {
+public class ClearReceiver extends AbstractClearReceiver {
 
     /**
      * Called when a local notification was cleared from outside of the app.
@@ -41,8 +38,7 @@ public class ClearReceiver extends de.appplant.cordova.plugin.notification.Clear
      */
     @Override
     public void onClear (Notification notification) {
-        super.onClear(notification);
-        LocalNotification.fireEvent("clear", notification);
+        notification.clear();
     }
 
 }

@@ -21,34 +21,30 @@
  * @APPPLANT_LICENSE_HEADER_END@
  */
 
-package de.appplant.cordova.plugin.localnotification;
-
-import de.appplant.cordova.plugin.notification.Builder;
-import de.appplant.cordova.plugin.notification.Notification;
+package de.appplant.cordova.plugin.notification;
 
 /**
- * The alarm receiver is triggered when a scheduled alarm is fired. This class
- * reads the information in the intent and displays this information in the
- * Android notification bar. The notification uses the default notification
- * sound and it vibrates the phone.
+ * The receiver activity is triggered when a notification is clicked by a user.
+ * The activity calls the background callback and brings the launch intent
+ * up to foreground.
  */
-public class TriggerReceiver extends de.appplant.cordova.plugin.notification.TriggerReceiver {
+public class ClickActivity extends AbstractClickActivity {
 
     /**
-     * Called when a local notification was triggered. Does present the local
-     * notification, re-schedule the alarm if necessary and fire trigger event.
+     * Called when local notification was clicked by the user. Will
+     * move the app to foreground.
      *
      * @param notification
      *      Wrapper around the local notification
-     * @param updated
-     *      If an update has triggered or the original
      */
     @Override
-    public void onTrigger (Notification notification, boolean updated) {
-        super.onTrigger(notification, updated);
+    public void onClick(Notification notification) {
+        launchApp();
 
-        if (!updated) {
-            LocalNotification.fireEvent("trigger", notification);
+        if (notification.isRepeating()) {
+            notification.clear();
+        } else {
+            notification.cancel();
         }
     }
 
@@ -58,13 +54,8 @@ public class TriggerReceiver extends de.appplant.cordova.plugin.notification.Tri
      * @param builder
      *      Notification builder
      */
-    @Override
     public Notification buildNotification (Builder builder) {
-        return builder
-                .setTriggerReceiver(TriggerReceiver.class)
-                .setClickActivity(ClickActivity.class)
-                .setClearReceiver(ClearReceiver.class)
-                .build();
+        return builder.build();
     }
 
 }

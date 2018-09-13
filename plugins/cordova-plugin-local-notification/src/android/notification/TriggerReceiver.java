@@ -21,10 +21,7 @@
  * @APPPLANT_LICENSE_HEADER_END@
  */
 
-package de.appplant.cordova.plugin.localnotification;
-
-import de.appplant.cordova.plugin.notification.Builder;
-import de.appplant.cordova.plugin.notification.Notification;
+package de.appplant.cordova.plugin.notification;
 
 /**
  * The alarm receiver is triggered when a scheduled alarm is fired. This class
@@ -32,11 +29,11 @@ import de.appplant.cordova.plugin.notification.Notification;
  * Android notification bar. The notification uses the default notification
  * sound and it vibrates the phone.
  */
-public class TriggerReceiver extends de.appplant.cordova.plugin.notification.TriggerReceiver {
+public class TriggerReceiver extends AbstractTriggerReceiver {
 
     /**
      * Called when a local notification was triggered. Does present the local
-     * notification, re-schedule the alarm if necessary and fire trigger event.
+     * notification and re-schedule the alarm if necessary.
      *
      * @param notification
      *      Wrapper around the local notification
@@ -45,11 +42,7 @@ public class TriggerReceiver extends de.appplant.cordova.plugin.notification.Tri
      */
     @Override
     public void onTrigger (Notification notification, boolean updated) {
-        super.onTrigger(notification, updated);
-
-        if (!updated) {
-            LocalNotification.fireEvent("trigger", notification);
-        }
+        notification.show();
     }
 
     /**
@@ -60,11 +53,7 @@ public class TriggerReceiver extends de.appplant.cordova.plugin.notification.Tri
      */
     @Override
     public Notification buildNotification (Builder builder) {
-        return builder
-                .setTriggerReceiver(TriggerReceiver.class)
-                .setClickActivity(ClickActivity.class)
-                .setClearReceiver(ClearReceiver.class)
-                .build();
+        return builder.build();
     }
 
 }
